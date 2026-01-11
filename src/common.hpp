@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string_view>
 
 namespace tinylog
 {
@@ -16,5 +17,24 @@ namespace tinylog
         ERROR = 3,
         FATAL = 4,
     };
+
+    constexpr auto to_string(LogLevel log_level) noexcept -> std::string_view
+    {
+        switch (log_level)
+        {
+        case LogLevel::DEBUG:
+            return "DEBUG";
+        case LogLevel::INFO:
+            return "INFO";
+        case LogLevel::WARN:
+            return "WARN";
+        case LogLevel::ERROR:
+            return "ERROR";
+        case LogLevel::FATAL:
+            return "FATAL";
+        }
+
+        return "UNKNOWN";
+    }
 
 } // namespace tinylog
