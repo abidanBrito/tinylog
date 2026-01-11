@@ -10,7 +10,6 @@
 #include <fstream>
 #include <memory>
 #include <mutex>
-#include <thread>
 
 namespace tinylog
 {
@@ -49,7 +48,7 @@ namespace tinylog
         }
 
         template <typename... Args>
-        auto log(LogLevel level, const std::string& msg, Args&&... args) -> void
+        auto log(LogLevel level, std::format_string<Args...> fmt, Args&&... args) -> void
         {
             if (level < level_)
             {
@@ -59,7 +58,7 @@ namespace tinylog
             std::lock_guard<std::mutex> lock(mutex_);
             *out_ << "[" << "Timestamp" << "]"
                   << " [" << to_string(level) << "]"
-                  << " " << std::format(msg, std::forward<Args>(args)...) << "\n";
+                  << " " << std::format(fmt, std::forward<Args>(args)...) << "\n";
 
             if (owns_stream_)
             {
@@ -68,33 +67,33 @@ namespace tinylog
         }
 
         template <typename... Args>
-        auto debug(const std::string& msg, Args&&... args) -> void
+        auto debug(std::format_string<Args...> fmt, Args&&... args) -> void
         {
-            log(LogLevel::DEBUG, msg, std::forward<Args>(args)...);
+            log(LogLevel::DEBUG, fmt, std::forward<Args>(args)...);
         }
 
         template <typename... Args>
-        auto info(const std::string& msg, Args&&... args) -> void
+        auto info(std::format_string<Args...> fmt, Args&&... args) -> void
         {
-            log(LogLevel::INFO, msg, std::forward<Args>(args)...);
+            log(LogLevel::INFO, fmt, std::forward<Args>(args)...);
         }
 
         template <typename... Args>
-        auto warn(const std::string& msg, Args&&... args) -> void
+        auto warn(std::format_string<Args...> fmt, Args&&... args) -> void
         {
-            log(LogLevel::WARN, msg, std::forward<Args>(args)...);
+            log(LogLevel::WARN, fmt, std::forward<Args>(args)...);
         }
 
         template <typename... Args>
-        auto error(const std::string& msg, Args&&... args) -> void
+        auto error(std::format_string<Args...> fmt, Args&&... args) -> void
         {
-            log(LogLevel::ERROR, msg, std::forward<Args>(args)...);
+            log(LogLevel::ERROR, fmt, std::forward<Args>(args)...);
         }
 
         template <typename... Args>
-        auto fatal(const std::string& msg, Args&&... args) -> void
+        auto fatal(std::format_string<Args...> fmt, Args&&... args) -> void
         {
-            log(LogLevel::FATAL, msg, std::forward<Args>(args)...);
+            log(LogLevel::FATAL, fmt, std::forward<Args>(args)...);
         }
 
     private:
