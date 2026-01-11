@@ -29,8 +29,11 @@ namespace tinylog
               file_{std::make_unique<std::ofstream>(filepath, std::ios::app)},
               out_{file_.get()},
               owns_stream_{true}
-
         {
+            if (!file_->is_open())
+            {
+                throw std::runtime_error("Failed to open log file: " + filepath);
+            }
         }
 
         ~SyncLogger() = default;
