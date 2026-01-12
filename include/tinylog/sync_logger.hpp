@@ -59,7 +59,7 @@ namespace tinylog
             }
 
             std::lock_guard<std::mutex> lock(mutex_);
-            *out_ << "[" << "Timestamp" << "]"
+            *out_ << "[" << timestamp_now() << "]"
                   << " [" << to_string(level) << "]"
                   << " " << std::format(fmt, std::forward<Args>(args)...) << "\n";
 
