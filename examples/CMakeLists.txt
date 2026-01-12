@@ -14,3 +14,4 @@ endfunction()
 
 add_tinylog_example_executable(console_logging)
 add_tinylog_example_executable(file_logging)
+add_tinylog_example_executable(formatted_logging)
