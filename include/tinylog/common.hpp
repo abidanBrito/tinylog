@@ -3,26 +3,29 @@
 
 #pragma once
 
+#include <chrono>
 #include <cstdint>
 #include <string_view>
-#include <chrono>
 
 namespace tinylog
 {
 
     enum class LogLevel : std::uint8_t
     {
-        DEBUG = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3,
-        FATAL = 4,
+        TRACE = 0,
+        DEBUG = 1,
+        INFO  = 2,
+        WARN  = 3,
+        ERROR = 4,
+        FATAL = 5,
     };
 
-    constexpr auto to_string(LogLevel log_level) noexcept -> std::string_view
+    constexpr auto to_string(LogLevel level) noexcept -> std::string_view
     {
-        switch (log_level)
+        switch (level)
         {
+        case LogLevel::TRACE:
+            return "TRACE";
         case LogLevel::DEBUG:
             return "DEBUG";
         case LogLevel::INFO:
@@ -41,7 +44,7 @@ namespace tinylog
     inline auto timestamp_now() -> std::string
     {
         auto current = std::chrono::system_clock::now();
-        auto time = std::chrono::system_clock::to_time_t(current);
+        auto time    = std::chrono::system_clock::to_time_t(current);
         auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(current.time_since_epoch())
                   % 1000;
 
