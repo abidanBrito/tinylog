@@ -89,6 +89,12 @@ namespace tinylog
         }
 
         template <typename... Args>
+        auto trace(std::format_string<Args...> fmt, Args&&... args) -> void
+        {
+            log(LogLevel::TRACE, fmt, std::forward<Args>(args)...);
+        }
+
+        template <typename... Args>
         auto debug(std::format_string<Args...> fmt, Args&&... args) -> void
         {
             log(LogLevel::DEBUG, fmt, std::forward<Args>(args)...);
