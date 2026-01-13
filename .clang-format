@@ -20,9 +20,16 @@
   AlignTrailingComments: true
   AlignConsecutiveAssignments: true
   AlignConsecutiveDeclarations: true
+  AlignConsecutiveShortCaseStatements:
+    Enabled: true
+    AcrossEmptyLines: false
+    AcrossComments: false
+    AlignCaseColons: false
   PointerAlignment: Left
   IncludeBlocks: Regroup
   SortIncludes: true
   AllowAllParametersOfDeclarationOnNextLine: false
+  AllowShortIfStatementsOnASingleLine: WithoutElse
+  AllowShortCaseLabelsOnASingleLine: true
   AllowShortFunctionsOnASingleLine: Empty
 ...
