@@ -5,9 +5,10 @@
 
 auto main() -> int
 {
-    tinylog::SyncLogger logger(tinylog::LogLevel::DEBUG);
+    tinylog::SyncLogger logger(tinylog::LogLevel::TRACE);
 
-    logger.debug("Application starting...");
+    logger.trace("Application starting...");
+    logger.debug("Loading configuration file from config.yaml...");
     logger.info("Server listening on port 8080");
     logger.warn("Cache is 80% full");
     logger.error("Failed to connect to database");
