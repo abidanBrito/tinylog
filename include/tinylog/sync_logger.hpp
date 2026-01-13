@@ -6,8 +6,8 @@
 #include "common.hpp"
 
 #include <format>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <mutex>
 
@@ -38,10 +38,10 @@ namespace tinylog
 
         ~SyncLogger() = default;
 
-        SyncLogger(const SyncLogger&) = delete;
+        SyncLogger(const SyncLogger&)                    = delete;
         auto operator=(const SyncLogger&) -> SyncLogger& = delete;
 
-        SyncLogger(SyncLogger&&) = delete;
+        SyncLogger(SyncLogger&&)                    = delete;
         auto operator=(SyncLogger&&) -> SyncLogger& = delete;
 
         auto set_level(LogLevel level) -> void
@@ -100,11 +100,11 @@ namespace tinylog
         }
 
     private:
-        LogLevel level_;
+        LogLevel                       level_;
         std::unique_ptr<std::ofstream> file_;
-        std::ostream* out_;
-        std::mutex mutex_;
-        bool owns_stream_;
+        std::ostream*                  out_;
+        std::mutex                     mutex_;
+        bool                           owns_stream_;
     };
 
 } // namespace tinylog
