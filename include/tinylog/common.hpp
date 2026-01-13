@@ -5,6 +5,7 @@
 
 #include <chrono>
 #include <cstdint>
+#include <optional>
 #include <string_view>
 
 namespace tinylog
@@ -23,34 +24,54 @@ namespace tinylog
     {
         switch (level)
         {
-        case LogLevel::TRACE:
-            return "TRACE";
-        case LogLevel::DEBUG:
-            return "DEBUG";
-        case LogLevel::INFO:
-            return "INFO";
-        case LogLevel::WARN:
-            return "WARN";
-        case LogLevel::ERROR:
-            return "ERROR";
-        case LogLevel::FATAL:
-            return "FATAL";
+        case LogLevel::TRACE: return "TRACE";
+        case LogLevel::DEBUG: return "DEBUG";
+        case LogLevel::INFO:  return "INFO";
+        case LogLevel::WARN:  return "WARN";
+        case LogLevel::ERROR: return "ERROR";
+        case LogLevel::FATAL: return "FATAL";
         }
 
         return "UNKNOWN";
     }
 
-    inline auto timestamp_now() -> std::string
+    namespace detail
     {
-        auto current = std::chrono::system_clock::now();
-        auto time    = std::chrono::system_clock::to_time_t(current);
-        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(current.time_since_epoch())
-                  % 1000;
+        inline auto parse_log_level(std::string_view level) -> std::optional<LogLevel>
+        {
+            if (level == "TRACE") return LogLevel::TRACE;
+            if (level == "DEBUG") return LogLevel::DEBUG;
+            if (level == "INFO") return LogLevel::INFO;
+            if (level == "WARN") return LogLevel::WARN;
+            if (level == "ERROR") return LogLevel::ERROR;
+            if (level == "FATAL") return LogLevel::FATAL;
 
-        std::ostringstream oss;
-        oss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S") << '.' << std::setfill('0')
-            << std::setw(3) << ms.count();
+            return std::nullopt;
+        }
 
-        return oss.str();
-    }
+        inline auto get_log_level_from_env() -> std::optional<LogLevel>
+        {
+            if (const char* env = std::getenv("TINYLOG_LEVEL"))
+            {
+                return parse_log_level(env);
+            }
+
+            return std::nullopt;
+        }
+
+        inline auto timestamp_now() -> std::string
+        {
+            auto current = std::chrono::system_clock::now();
+            auto time    = std::chrono::system_clock::to_time_t(current);
+            auto ms =
+                std::chrono::duration_cast<std::chrono::milliseconds>(current.time_since_epoch())
+                % 1000;
+
+            std::ostringstream oss;
+            oss << std::put_time(std::localtime(&time), "%Y-%m-%d %H:%M:%S") << '.'
+                << std::setfill('0') << std::setw(3) << ms.count();
+
+            return oss.str();
+        }
+    } // namespace detail
 } // namespace tinylog

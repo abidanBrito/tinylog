@@ -18,7 +18,7 @@ namespace tinylog
     {
     public:
         explicit SyncLogger(LogLevel level = LogLevel::INFO, ColorMode color_mode = ColorMode::AUTO)
-            : level_{level},
+            : level_{detail::get_log_level_from_env().value_or(level)},
               out_{&std::cout},
               owns_stream_{false},
               use_colors_{should_use_colors(color_mode, false)}
@@ -68,7 +68,7 @@ namespace tinylog
 
             std::lock_guard<std::mutex> lock(mutex_);
 
-            *out_ << "[" << timestamp_now() << "]";
+            *out_ << "[" << detail::timestamp_now() << "]";
 
             if (use_colors_)
             {
@@ -141,12 +141,9 @@ namespace tinylog
 
             switch (mode)
             {
-            case ColorMode::ALWAYS:
-                return true;
-            case ColorMode::NEVER:
-                return false;
-            case ColorMode::AUTO:
-                return detail::is_terminal_color_supported();
+            case ColorMode::ALWAYS: return true;
+            case ColorMode::NEVER:  return false;
+            case ColorMode::AUTO:   return detail::is_terminal_color_supported();
             }
 
             return false;

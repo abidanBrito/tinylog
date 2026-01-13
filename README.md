@@ -17,7 +17,7 @@ A minimal and thread-safe header-only logging library with zero dependencies.
 - [ ] Custom timestamp formats (ISO8601, RFC3339, etc.).
 - [ ] Multiple simultaneous sinks.
 - [ ] Log rotation (size-based and time-based).
-- [ ] Log level from environment variable
+- [x] Log level from environment variable
 - [ ] Source locations macros (file:line).
 - [ ] Structured logging (JSON).
 - [ ] Filter by regex/pattern.
@@ -104,4 +104,4 @@ cl /std:c++20 /EHsc /I.\include main.cpp
 ```
 
 ## LICENSE
-This repository is released under the MIT license. See [LICENSE.md](LICENSE.md) for more information.
+This repository is released under the MIT license. See [LICENSE](LICENSE) for more information.
