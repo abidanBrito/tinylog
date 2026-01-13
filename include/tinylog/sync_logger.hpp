@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include "color.hpp"
 #include "common.hpp"
 
 #include <format>
@@ -13,14 +14,14 @@
 
 namespace tinylog
 {
-
     class SyncLogger
     {
     public:
-        explicit SyncLogger(LogLevel level = LogLevel::INFO)
+        explicit SyncLogger(LogLevel level = LogLevel::INFO, ColorMode color_mode = ColorMode::AUTO)
             : level_{level},
               out_{&std::cout},
-              owns_stream_{false}
+              owns_stream_{false},
+              use_colors_{should_use_colors(color_mode, false)}
         {
         }
 
@@ -28,7 +29,8 @@ namespace tinylog
             : level_{level},
               file_{std::make_unique<std::ofstream>(filepath, std::ios::app)},
               out_{file_.get()},
-              owns_stream_{true}
+              owns_stream_{true},
+              use_colors_{false}
         {
             if (!file_->is_open())
             {
@@ -50,6 +52,12 @@ namespace tinylog
             level_ = level;
         }
 
+        auto set_color_mode(ColorMode mode) -> void
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            use_colors_ = should_use_colors(mode, owns_stream_);
+        }
+
         template <typename... Args>
         auto log(LogLevel level, std::format_string<Args...> fmt, Args&&... args) -> void
         {
@@ -59,9 +67,20 @@ namespace tinylog
             }
 
             std::lock_guard<std::mutex> lock(mutex_);
-            *out_ << "[" << timestamp_now() << "]"
-                  << " [" << to_string(level) << "]"
-                  << " " << std::format(fmt, std::forward<Args>(args)...) << "\n";
+
+            *out_ << "[" << timestamp_now() << "]";
+
+            if (use_colors_)
+            {
+                *out_ << " " << detail::get_level_color_code(level) << "[" << to_string(level)
+                      << "]" << detail::get_reset_code();
+            }
+            else
+            {
+                *out_ << " [" << to_string(level) << "]";
+            }
+
+            *out_ << " " << std::format(fmt, std::forward<Args>(args)...) << "\n";
 
             if (owns_stream_)
             {
@@ -105,6 +124,26 @@ namespace tinylog
         std::ostream*                  out_;
         std::mutex                     mutex_;
         bool                           owns_stream_;
-    };
+        bool                           use_colors_;
 
+        [[nodiscard]] static auto should_use_colors(ColorMode mode, bool is_file) -> bool
+        {
+            if (is_file)
+            {
+                return false;
+            }
+
+            switch (mode)
+            {
+            case ColorMode::ALWAYS:
+                return true;
+            case ColorMode::NEVER:
+                return false;
+            case ColorMode::AUTO:
+                return detail::is_terminal_color_supported();
+            }
+
+            return false;
+        }
+    };
 } // namespace tinylog

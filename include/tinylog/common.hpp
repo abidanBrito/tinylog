@@ -9,7 +9,6 @@
 
 namespace tinylog
 {
-
     enum class LogLevel : std::uint8_t
     {
         TRACE = 0,
@@ -54,5 +53,4 @@ namespace tinylog
 
         return oss.str();
     }
-
 } // namespace tinylog
