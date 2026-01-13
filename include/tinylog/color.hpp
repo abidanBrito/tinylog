@@ -60,18 +60,12 @@ namespace tinylog
         {
             switch (level)
             {
-            case LogLevel::TRACE:
-                return BRIGHT_BLACK;
-            case LogLevel::DEBUG:
-                return CYAN;
-            case LogLevel::INFO:
-                return GREEN;
-            case LogLevel::WARN:
-                return YELLOW;
-            case LogLevel::ERROR:
-                return RED;
-            case LogLevel::FATAL:
-                return BRIGHT_RED;
+            case LogLevel::TRACE: return BRIGHT_BLACK;
+            case LogLevel::DEBUG: return CYAN;
+            case LogLevel::INFO:  return GREEN;
+            case LogLevel::WARN:  return YELLOW;
+            case LogLevel::ERROR: return RED;
+            case LogLevel::FATAL: return BRIGHT_RED;
             }
 
             return {};
