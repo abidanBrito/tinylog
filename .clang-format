@@ -16,10 +16,13 @@
   KeepEmptyLinesAtTheStartOfBlocks: false
   MaxEmptyLinesToKeep: 1
   ReflowComments: true
-  AlignTrailingComments: true
   AlignAfterOpenBracket: Align
+  AlignTrailingComments: true
+  AlignConsecutiveAssignments: true
+  AlignConsecutiveDeclarations: true
   PointerAlignment: Left
   IncludeBlocks: Regroup
-  SortIncludes: false
+  SortIncludes: true
   AllowAllParametersOfDeclarationOnNextLine: false
+  AllowShortFunctionsOnASingleLine: Empty
 ...
