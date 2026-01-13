@@ -1,6 +1,6 @@
 function(add_tinylog_example_executable name)
   add_executable(${name} ${name}.cpp)
-  target_link_libraries(${name} PRIVATE tinylog)
+  target_link_libraries(${name} PRIVATE tinylog::tinylog)
   set_target_properties(${name} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/examples"
   )

@@ -18,6 +18,7 @@ option(TINYLOG_BUILD_EXAMPLES "Build example programs" ON)
 
 # Header-only library
 add_library(tinylog INTERFACE)
+add_library(tinylog::tinylog ALIAS tinylog)
 
 target_include_directories(tinylog INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
