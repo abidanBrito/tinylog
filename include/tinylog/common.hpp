@@ -5,7 +5,12 @@
 
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
+#include <ctime>
+#include <iomanip>
 #include <optional>
+#include <sstream>
+#include <string>
 #include <string_view>
 
 namespace tinylog

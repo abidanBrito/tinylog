@@ -11,6 +11,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <stdexcept>
 
 namespace tinylog
 {
