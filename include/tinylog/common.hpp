@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
+#include <iostream>
 #include <optional>
 #include <sstream>
 #include <string>
@@ -58,7 +59,13 @@ namespace tinylog
         {
             if (const char* env = std::getenv("TINYLOG_LEVEL"))
             {
-                return parse_log_level(env);
+                if (auto parsed = parse_log_level(env))
+                {
+                    return parsed;
+                }
+
+                std::cerr << "[tinylog] - Warning: unrecognized TINYLOG_LEVEL value '" << env
+                          << "', ignoring...\n";
             }
 
             return std::nullopt;
