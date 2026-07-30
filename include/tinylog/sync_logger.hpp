@@ -27,7 +27,7 @@ namespace tinylog
         }
 
         explicit SyncLogger(const std::string& filepath, LogLevel level = LogLevel::INFO)
-            : level_{level},
+            : level_{detail::get_log_level_from_env().value_or(level)},
               file_{std::make_unique<std::ofstream>(filepath, std::ios::app)},
               out_{file_.get()},
               owns_stream_{true},
